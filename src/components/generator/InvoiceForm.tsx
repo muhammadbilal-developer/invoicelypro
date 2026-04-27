@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Plus, Trash2 } from "lucide-react";
 import { useInvoiceStore } from "@/lib/invoice-store";
-import { TEMPLATE_PRESETS } from "@/lib/template-presets";
+import { TemplateSwitcher } from "./TemplateSwitcher";
 
 export function InvoiceForm() {
   const { data, setData, setItems } = useInvoiceStore();
@@ -24,18 +24,7 @@ export function InvoiceForm() {
       <section className="rounded-2xl border border-[var(--border-default)] bg-[var(--bg-elevated)] p-6">
         <h3 className="mb-4 text-lg font-semibold">Template & Branding</h3>
         <div className="grid gap-3">
-          <label className="text-sm font-medium">Select Template</label>
-          <select
-            className="focus-ring rounded-xl border border-[var(--border-default)] bg-[var(--bg-primary)] px-3 py-2"
-            value={data.templateId}
-            onChange={(event) => setData({ templateId: event.target.value })}
-          >
-            {TEMPLATE_PRESETS.map((template) => (
-              <option key={template.id} value={template.id}>
-                {template.name}
-              </option>
-            ))}
-          </select>
+          <TemplateSwitcher />
           <label className="text-sm font-medium">Upload Logo</label>
           <input
             type="file"

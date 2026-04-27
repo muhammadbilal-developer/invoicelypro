@@ -99,3 +99,32 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  [data-invoice-frame],
+  [data-invoice-frame] * {
+    visibility: visible;
+  }
+  [data-invoice-frame] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    box-shadow: none !important;
+    margin: 0 !important;
+    width: 210mm;
+    min-height: 297mm;
+  }
+  @page {
+    size: A4;
+    margin: 0;
+  }
+}
+
+.invoice-a4 {
+  color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}

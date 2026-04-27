@@ -24,7 +24,7 @@ export function FloatingHeader() {
   return (
     <motion.header
       style={{ paddingTop: py, paddingBottom: py }}
-      className="fixed left-1/2 top-3 z-50 flex h-14 w-[calc(100vw-1rem)] max-w-[min(1180px,calc(100vw-2rem))] -translate-x-1/2 items-center gap-2 rounded-[9999px] border border-[var(--border-default)] bg-[color:color-mix(in_oklab,var(--bg-elevated)_80%,transparent)] px-3 shadow-[var(--shadow-lg)] ring-1 ring-black/5 backdrop-blur-xl backdrop-saturate-150 dark:ring-white/5 md:top-4 md:h-16"
+      className="fixed left-1/2 top-3 z-50 flex h-14 w-[calc(100vw-1rem)] max-w-[min(1180px,calc(100vw-2rem))] -translate-x-1/2 items-center gap-2 rounded-[9999px] border border-[var(--border-default)] bg-[var(--bg-elevated)]/80 px-3 shadow-[var(--shadow-lg)] ring-1 ring-black/5 backdrop-blur-xl backdrop-saturate-150 dark:ring-white/5 md:top-4 md:h-16"
     >
       <Link href="/" className="focus-ring flex items-center gap-2 px-3">
         <Logo />
@@ -75,6 +75,9 @@ export function FloatingHeader() {
           <Dialog.Portal>
             <Dialog.Overlay className="fixed inset-0 z-50 bg-black/50" />
             <Dialog.Content className="fixed inset-0 z-[60] bg-[var(--bg-primary)] p-8">
+              <Dialog.Description className="sr-only">
+                Mobile navigation menu for InvoicelyPro pages.
+              </Dialog.Description>
               <div className="mb-8 flex items-center justify-between">
                 <Dialog.Title className="text-xl font-semibold">Menu</Dialog.Title>
                 <Dialog.Close asChild>

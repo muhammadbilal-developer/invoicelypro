@@ -27,8 +27,7 @@ export function DownloadButtons() {
       <ActionButton
         label="Download PDF"
         onClick={async () => {
-          const element = document.getElementById("invoice-preview");
-          if (element) await exportInvoicePDF(element, "invoicelypro-invoice.pdf");
+          await exportInvoicePDF("invoicelypro-invoice.pdf");
         }}
       />
       <ActionButton label="Print" onClick={() => window.print()} />

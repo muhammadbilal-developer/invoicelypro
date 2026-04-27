@@ -15,11 +15,16 @@ export const metadata: Metadata = {
     "Free invoice generator with 30+ templates for restaurants, freelancers, hospitals, hotels, and more. Download PDF instantly with no signup.",
 };
 
-export default function HomePage() {
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ template?: string }>;
+}) {
+  const params = (await searchParams) ?? {};
   return (
     <>
       <Hero />
-      <InvoiceGeneratorApp />
+      <InvoiceGeneratorApp initialTemplateId={params.template} />
       <TemplatesShowcase />
       <FeaturesGrid />
       <HowItWorks />

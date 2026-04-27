@@ -1,10 +1,20 @@
 "use client";
 
+import { useEffect } from "react";
 import { DownloadButtons } from "@/components/generator/DownloadButtons";
 import { InvoiceForm } from "@/components/generator/InvoiceForm";
 import { InvoicePreview } from "@/components/generator/InvoicePreview";
+import { TEMPLATES } from "@/components/templates";
+import { useInvoiceStore } from "@/lib/invoice-store";
 
-export function InvoiceGeneratorApp() {
+export function InvoiceGeneratorApp({ initialTemplateId }: { initialTemplateId?: string }) {
+  const { setData } = useInvoiceStore();
+  useEffect(() => {
+    if (!initialTemplateId) return;
+    if (!TEMPLATES[initialTemplateId]) return;
+    setData({ templateId: initialTemplateId });
+  }, [initialTemplateId, setData]);
+
   return (
     <section id="generator" className="container-shell py-20 md:py-28">
       <div className="mb-6">

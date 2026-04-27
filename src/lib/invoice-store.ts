@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { DEFAULT_TEMPLATE_ID } from "./template-presets";
 
 export type LineItem = {
   id: string;
@@ -49,7 +48,7 @@ type InvoiceStore = {
 };
 
 const initialData: InvoiceData = {
-  templateId: DEFAULT_TEMPLATE_ID,
+  templateId: "general-invoice",
   documentType: "invoice",
   invoiceNumber: `INV-${new Date().toISOString().slice(0, 10).replaceAll("-", "")}-1001`,
   issueDate: new Date().toISOString().slice(0, 10),

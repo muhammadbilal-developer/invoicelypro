@@ -1,25 +1,72 @@
+import {
+  Bot,
+  Download,
+  Globe,
+  Layers3,
+  MoonStar,
+  ShieldCheck,
+  UserCheck,
+  WalletCards,
+} from "lucide-react";
+
 const FEATURES = [
-  "30+ Industry Templates",
-  "Instant PDF Download",
-  "165+ Currencies",
-  "No Signup Required",
-  "Light & Dark Mode",
-  "AI Line Items",
-  "Pakistan FBR Ready",
-  "Save & Reuse",
+  {
+    title: "30+ Industry Templates",
+    description: "From restaurants to hospitals, pick a ready-made professional layout.",
+    Icon: Layers3,
+  },
+  {
+    title: "Instant PDF Download",
+    description: "One click export with print-ready quality and no watermark.",
+    Icon: Download,
+  },
+  {
+    title: "165+ Currencies",
+    description: "Invoice clients worldwide with fast multi-currency support.",
+    Icon: Globe,
+  },
+  {
+    title: "No Signup Required",
+    description: "Open, fill, export. No account, no onboarding friction.",
+    Icon: UserCheck,
+  },
+  {
+    title: "Light & Dark Mode",
+    description: "Comfortable editing experience in every environment.",
+    Icon: MoonStar,
+  },
+  {
+    title: "AI Line Items",
+    description: "Generate clean line items from your work description.",
+    Icon: Bot,
+  },
+  {
+    title: "Pakistan FBR Ready",
+    description: "Built for practical invoicing requirements in Pakistan.",
+    Icon: ShieldCheck,
+  },
+  {
+    title: "Save & Reuse",
+    description: "Store draft data in browser and reuse it in seconds.",
+    Icon: WalletCards,
+  },
 ];
 
 export function FeaturesGrid() {
   return (
     <section id="features" className="container-shell py-20">
       <h2 className="text-3xl font-bold md:text-5xl">Everything You Need to Invoice Like a Pro</h2>
-      <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-        {FEATURES.map((title) => (
-          <article key={title} className="rounded-2xl border border-[var(--border-default)] bg-[var(--bg-elevated)] p-6">
-            <h3 className="text-lg font-semibold">{title}</h3>
-            <p className="mt-2 text-sm text-[var(--text-secondary)]">
-              Professional billing workflow tailored for modern businesses.
-            </p>
+      <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        {FEATURES.map(({ title, description, Icon }) => (
+          <article
+            key={title}
+            className="group rounded-2xl border border-[var(--border-default)] bg-[var(--bg-elevated)] p-5 shadow-[var(--shadow-sm)] transition hover:-translate-y-0.5 hover:shadow-[var(--shadow-md)]"
+          >
+            <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--bg-tertiary)] text-[var(--brand-primary)]">
+              <Icon className="h-5 w-5" />
+            </div>
+            <h3 className="text-[17px] font-semibold leading-tight">{title}</h3>
+            <p className="mt-1.5 text-sm leading-6 text-[var(--text-secondary)]">{description}</p>
           </article>
         ))}
       </div>
