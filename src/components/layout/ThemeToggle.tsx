@@ -2,17 +2,16 @@
 
 import { motion } from "framer-motion";
 import { Moon, Sun } from "lucide-react";
-import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import { useAppTheme } from "./ThemeProvider";
 
 export function ThemeToggle() {
-  const { theme, setTheme, resolvedTheme } = useTheme();
+  const { theme, toggleTheme } = useAppTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
 
-  const current = theme === "system" ? resolvedTheme : theme;
-  const isDark = current === "dark";
+  const isDark = theme === "dark";
 
   if (!mounted) {
     return <div className="h-10 w-10 rounded-full border border-[var(--border-default)]" />;
@@ -21,7 +20,7 @@ export function ThemeToggle() {
   return (
     <button
       aria-label="Toggle theme"
-      onClick={() => setTheme(isDark ? "light" : "dark")}
+      onClick={toggleTheme}
       className="focus-ring inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--border-default)] bg-[var(--bg-primary)] text-[var(--text-primary)]"
       type="button"
     >

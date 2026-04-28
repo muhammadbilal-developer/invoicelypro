@@ -38,7 +38,7 @@ export function Logo({ data, fallbackText = "Invar" }: { data: InvoiceData; fall
   return (
     <div className="text-[22px] font-extrabold tracking-tight">
       <span style={{ color: "var(--bc)" }}>{fallbackText[0]}</span>
-      <span className="text-gray-900">{fallbackText.slice(1)}</span>
+      <span className="text-[#111827]">{fallbackText.slice(1)}</span>
     </div>
   );
 }
@@ -58,7 +58,7 @@ export function DocumentTitle({ text }: { text: string }) {
 export function MetaRow({ label, value }: { label: string; value?: string }) {
   return (
     <div className="flex items-center justify-between py-1">
-      <span className="text-[10px] uppercase tracking-wide text-gray-500">{label}</span>
+      <span className="text-[10px] uppercase tracking-wide text-[#6b7280]">{label}</span>
       <span className="text-[11px] font-semibold">{safe(value)}</span>
     </div>
   );
@@ -71,10 +71,10 @@ export function PartyBlock({ title, party, align = "left" }: { title: string; pa
         {title}
       </div>
       <div className="text-[12px] font-semibold">{safe(party.name)}</div>
-      <div className="whitespace-pre-line text-[10px] text-gray-700">{safe(party.address)}</div>
-      <div className="text-[10px] text-gray-700">{safe(party.email)}</div>
-      <div className="text-[10px] text-gray-700">{safe(party.phone)}</div>
-      {party.taxId ? <div className="text-[10px] text-gray-700">Tax ID: {party.taxId}</div> : null}
+      <div className="whitespace-pre-line text-[10px] text-[#374151]">{safe(party.address)}</div>
+      <div className="text-[10px] text-[#374151]">{safe(party.email)}</div>
+      <div className="text-[10px] text-[#374151]">{safe(party.phone)}</div>
+      {party.taxId ? <div className="text-[10px] text-[#374151]">Tax ID: {party.taxId}</div> : null}
     </div>
   );
 }
@@ -96,30 +96,48 @@ export function ItemsTable({
       : variant === "filled"
         ? { background: "#F4F6FB" }
         : {};
+  const chunks: LineItem[][] = [];
+  for (let i = 0; i < items.length; i += 20) {
+    chunks.push(items.slice(i, i + 20));
+  }
+
   return (
-    <table className="w-full border-collapse text-[11px]">
-      <thead>
-        <tr style={headStyle}>
-          {columns.map((col) => (
-            <th key={col} className={`px-2 py-2 text-left text-[10px] uppercase tracking-wide ${["price", "qty", "tax", "total"].includes(col) ? "text-right" : ""}`}>
-              {col === "sl" ? "SL" : col === "qty" ? "QTY" : col.toUpperCase()}
-            </th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {items.map((item, idx) => (
-          <tr key={item.id} className={variant === "striped" && idx % 2 ? "bg-gray-50" : ""} style={{ borderBottom: "1px solid #E5E7EB" }}>
-            {columns.includes("sl") ? <td className="px-2 py-2">{(item as { sl?: number | string }).sl ?? String(idx + 1).padStart(2, "0")}</td> : null}
-            {columns.includes("description") ? <td className="px-2 py-2">{safe(item.description)}</td> : null}
-            {columns.includes("price") ? <td className="px-2 py-2 text-right font-mono">{money(data, item.rate)}</td> : null}
-            {columns.includes("qty") ? <td className="px-2 py-2 text-right">{item.quantity}</td> : null}
-            {columns.includes("tax") ? <td className="px-2 py-2 text-right">{item.taxPercent ?? 0}%</td> : null}
-            {columns.includes("total") ? <td className="px-2 py-2 text-right font-mono">{money(data, item.quantity * item.rate)}</td> : null}
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <div>
+      {chunks.map((group, groupIndex) => (
+        <div
+          key={`chunk-${groupIndex}`}
+          className={groupIndex > 0 ? "mt-8 border-t border-dashed border-[#d1d5db] pt-6" : ""}
+          style={groupIndex > 0 ? ({ breakBefore: "page", pageBreakBefore: "always" } as { breakBefore: "page"; pageBreakBefore: "always" }) : undefined}
+        >
+          <table className="w-full border-collapse text-[11px]">
+            <thead>
+              <tr style={headStyle}>
+                {columns.map((col) => (
+                  <th key={col} className={`px-2 py-2 text-left text-[10px] uppercase tracking-wide ${["price", "qty", "tax", "total"].includes(col) ? "text-right" : ""}`}>
+                    {col === "sl" ? "SL" : col === "qty" ? "QTY" : col.toUpperCase()}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {group.map((item, idx) => {
+                const absoluteIdx = groupIndex * 20 + idx;
+                return (
+                  <tr key={item.id} className={variant === "striped" && absoluteIdx % 2 ? "bg-[#f9fafb]" : ""} style={{ borderBottom: "1px solid #E5E7EB" }}>
+                    {columns.includes("sl") ? <td className="px-2 py-2">{(item as { sl?: number | string }).sl ?? String(absoluteIdx + 1).padStart(2, "0")}</td> : null}
+                    {columns.includes("description") ? <td className="px-2 py-2">{safe(item.description)}</td> : null}
+                    {columns.includes("price") ? <td className="px-2 py-2 text-right font-mono">{money(data, item.rate)}</td> : null}
+                    {columns.includes("qty") ? <td className="px-2 py-2 text-right">{item.quantity}</td> : null}
+                    {columns.includes("tax") ? <td className="px-2 py-2 text-right">{item.taxPercent ?? 0}%</td> : null}
+                    {columns.includes("total") ? <td className="px-2 py-2 text-right font-mono">{money(data, item.quantity * item.rate)}</td> : null}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      ))}
+    </div>
   );
 }
 
@@ -161,20 +179,20 @@ function Row({ label, value, strong = false, accent = false }: { label: string; 
 export function SignatureBlock() {
   return (
     <div className="mt-8 grid grid-cols-2 gap-10 text-[10px]">
-      <div className="border-t border-gray-300 pt-2 text-center">Signature of Client</div>
-      <div className="border-t border-gray-300 pt-2 text-center">Company Signature</div>
+      <div className="border-t border-[#d1d5db] pt-2 text-center">Signature of Client</div>
+      <div className="border-t border-[#d1d5db] pt-2 text-center">Company Signature</div>
     </div>
   );
 }
 
 export function NoteBlock({ children }: { children: React.ReactNode }) {
   return (
-    <div className="mt-6 bg-[var(--bc-soft)] p-3 text-[9px] italic text-gray-600" style={{ borderLeft: "3px solid var(--bc)" }}>
+    <div className="mt-6 bg-[var(--bc-soft)] p-3 text-[9px] italic text-[#4b5563]" style={{ borderLeft: "3px solid var(--bc)" }}>
       {children}
     </div>
   );
 }
 
 export function FooterAddress({ address }: { address?: string }) {
-  return <div className="mt-6 border-t border-gray-200 pt-3 text-center text-[9px] text-gray-500">{safe(address)}</div>;
+  return <div className="mt-6 border-t border-[#e5e7eb] pt-3 text-center text-[9px] text-[#6b7280]">{safe(address)}</div>;
 }

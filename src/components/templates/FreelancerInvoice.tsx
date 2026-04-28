@@ -14,7 +14,7 @@ export function FreelancerInvoice({ data }: { data: InvoiceData }) {
             Freelance Invoice
           </div>
           <div className="mt-2 font-mono text-[12px] font-semibold">{data.invoiceNumber}</div>
-          <div className="text-[10px] text-gray-600">{data.issueDate} · Due {data.dueDate}</div>
+          <div className="text-[10px] text-[#4b5563]">{data.issueDate} · Due {data.dueDate}</div>
         </div>
       </header>
 
@@ -36,7 +36,7 @@ export function FreelancerInvoice({ data }: { data: InvoiceData }) {
         </div>
       </section>
 
-      <section className="mb-5 rounded-md border border-gray-200 p-3 text-[10px]">
+      <section className="mb-5 rounded-md border border-[#e5e7eb] p-3 text-[10px]">
         Project / Period / Rate
       </section>
 
@@ -46,8 +46,8 @@ export function FreelancerInvoice({ data }: { data: InvoiceData }) {
       </section>
 
       <section className="mt-6 grid grid-cols-2 gap-4 text-[10px]">
-        <div className="rounded-md bg-gray-50 p-3 font-mono">{data.paymentInstructions || "—"}</div>
-        <div className="rounded-md bg-gray-50 p-3">{data.notes || "—"}</div>
+        <div className="rounded-md bg-[#f8fafc] p-3 font-mono">{data.paymentInstructions || "—"}</div>
+        <div className="rounded-md bg-[#f8fafc] p-3">{data.notes || "—"}</div>
       </section>
 
       <NoteBlock>NOTE: This is a computer generated receipt and does not require physical signature.</NoteBlock>

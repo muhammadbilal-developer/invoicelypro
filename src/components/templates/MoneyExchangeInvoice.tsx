@@ -43,7 +43,7 @@ export function MoneyExchangeInvoice({ data }: { data: InvoiceData }) {
         <PartyBlock title="Pay To:" party={from} align="right" />
       </section>
 
-      <section className="mb-5 grid grid-cols-4 gap-2 rounded-md bg-gray-50 p-3 text-[10px]">
+      <section className="mb-5 grid grid-cols-4 gap-2 rounded-md bg-[#f8fafc] p-3 text-[10px]">
         <div><b>Template</b><br />Money Exchange Invoice</div>
         <div><b>Reference</b><br />{safe((data as unknown as { extras?: Record<string,string> }).extras?.bookingId)}</div>
         <div><b>Status</b><br />Confirmed</div>
@@ -59,11 +59,11 @@ export function MoneyExchangeInvoice({ data }: { data: InvoiceData }) {
       <section className="mt-7 grid grid-cols-2 gap-5 text-[10px]">
         <div>
           <h4 className="mb-1 text-[11px] font-bold uppercase" style={{ color: "var(--bc)" }}>Payment Info</h4>
-          <div className="whitespace-pre-line text-gray-700">{data.paymentInstructions || "—"}</div>
+          <div className="whitespace-pre-line text-[#374151]">{data.paymentInstructions || "—"}</div>
         </div>
         <div>
           <h4 className="mb-1 text-[11px] font-bold uppercase" style={{ color: "var(--bc)" }}>Terms & Conditions</h4>
-          <div className="whitespace-pre-line text-gray-700">{data.terms || "—"}</div>
+          <div className="whitespace-pre-line text-[#374151]">{data.terms || "—"}</div>
         </div>
       </section>
 

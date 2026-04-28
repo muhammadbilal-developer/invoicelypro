@@ -44,7 +44,7 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${sora.variable} ${inter.variable} ${mono.variable} h-full antialiased`}
     >
-      <body className="min-h-full bg-[var(--bg-secondary)] text-[var(--text-primary)]">
+      <body suppressHydrationWarning className="min-h-full bg-[var(--bg-secondary)] text-[var(--text-primary)]">
         <ThemeProvider>
           <FloatingHeader />
           <main className="pt-24">{children}</main>
