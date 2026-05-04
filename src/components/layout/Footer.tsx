@@ -49,7 +49,6 @@ export function Footer() {
             ["/invoice-generator/hotel-booking", "Hotel Invoice"],
             ["/invoice-generator/hospital", "Hospital Invoice"],
             ["/invoice-generator/it-service", "IT Service Invoice"],
-            ["/invoice-generator/pakistan-fbr", "Pakistan Invoice"],
             ["/templates", "View all 30+ →"],
           ]}
         />

@@ -6,8 +6,9 @@ import { TEMPLATE_LIST } from "../src/components/templates/_registry";
 
 const ROOT = path.resolve(process.cwd());
 const OUT_DIR = path.join(ROOT, "public", "templates", "thumbs");
-const PORT = 3111;
+const PORT = Number(process.env.THUMB_PORT || 3111);
 const BASE = `http://localhost:${PORT}`;
+const USE_EXISTING_DEV = process.env.USE_EXISTING_DEV === "1";
 
 async function waitForServer(url: string, retries = 60) {
   for (let i = 0; i < retries; i += 1) {
@@ -22,20 +23,22 @@ async function waitForServer(url: string, retries = 60) {
 
 async function run() {
   await fs.mkdir(OUT_DIR, { recursive: true });
-  const dev = spawn("npm", ["run", "dev", "--", "-p", String(PORT)], {
-    cwd: ROOT,
-    stdio: "pipe",
-    shell: true,
-  });
+  const dev = USE_EXISTING_DEV
+    ? null
+    : spawn("npm", ["run", "dev", "--", "--port", String(PORT)], {
+        cwd: ROOT,
+        stdio: "pipe",
+        shell: true,
+      });
 
   try {
-    await waitForServer(`${BASE}/templates/thumbnail-preview`);
+    await waitForServer(`${BASE}/`);
     const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
     await page.setViewport({ width: 1600, height: 2200, deviceScaleFactor: 1 });
 
     for (const tpl of TEMPLATE_LIST) {
-      const url = `${BASE}/templates/thumbnail-preview?id=${tpl.id}`;
+      const url = `${BASE}/?template=${tpl.id}`;
       await page.goto(url, { waitUntil: "networkidle0" });
       const frame = await page.$("[data-invoice-frame]");
       if (!frame) throw new Error(`Invoice frame missing for ${tpl.id}`);
@@ -45,7 +48,7 @@ async function run() {
 
     await browser.close();
   } finally {
-    dev.kill("SIGTERM");
+    dev?.kill("SIGTERM");
   }
 }
 

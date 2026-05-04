@@ -15,6 +15,7 @@ export type InvoiceData = {
   invoiceNumber: string;
   issueDate: string;
   dueDate: string;
+  companyName: string;
   currency: string;
   logo?: string;
   brandColor: string;
@@ -28,9 +29,14 @@ export type InvoiceData = {
   toEmail: string;
   toPhone: string;
   toTaxId?: string;
+  shipToName: string;
+  shipToAddress: string;
+  shipToEmail: string;
+  shipToPhone: string;
   items: LineItem[];
   taxMode: "percent" | "flat" | "off";
   taxValue: number;
+  taxLabel: string;
   discountMode: "percent" | "flat" | "off";
   discountValue: number;
   shippingValue: number;
@@ -53,6 +59,7 @@ const initialData: InvoiceData = {
   invoiceNumber: `INV-${new Date().toISOString().slice(0, 10).replaceAll("-", "")}-1001`,
   issueDate: new Date().toISOString().slice(0, 10),
   dueDate: new Date(Date.now() + 1000 * 60 * 60 * 24 * 14).toISOString().slice(0, 10),
+  companyName: "",
   currency: "USD",
   brandColor: "#2563EB",
   fromName: "",
@@ -63,9 +70,14 @@ const initialData: InvoiceData = {
   toAddress: "",
   toEmail: "",
   toPhone: "",
+  shipToName: "",
+  shipToAddress: "",
+  shipToEmail: "",
+  shipToPhone: "",
   items: [{ id: crypto.randomUUID(), description: "Service", quantity: 1, rate: 100 }],
   taxMode: "off",
   taxValue: 0,
+  taxLabel: "Tax",
   discountMode: "off",
   discountValue: 0,
   shippingValue: 0,

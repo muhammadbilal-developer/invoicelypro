@@ -40,7 +40,7 @@ export function Hero() {
   const active = MOCKUPS[activeIndex];
 
   return (
-    <section className="container-shell flex h-[calc(100svh-6rem)] items-center py-4">
+    <section className="container-shell flex min-h-[calc(100svh-6rem)] items-start pt-8 pb-4 md:items-center md:py-4">
       <div className="grid w-full gap-6 lg:grid-cols-2 lg:items-center">
         <div ref={ref} className={inView ? "reveal reveal-visible" : "reveal"}>
           <h1 className="text-4xl font-extrabold leading-[1.05] tracking-[-0.02em] md:text-6xl">

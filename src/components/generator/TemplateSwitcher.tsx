@@ -42,8 +42,8 @@ export function TemplateSwitcher() {
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Trigger asChild>
-        <button className="focus-ring inline-flex h-11 items-center rounded-full border border-[var(--border-default)] px-4 text-sm font-semibold">
-          🎨 Change Template ({selected?.name ?? "Select"})
+        <button className="focus-ring inline-flex h-11 w-full min-w-0 items-center rounded-full border border-[var(--border-default)] px-4 text-sm font-semibold">
+          <span className="block min-w-0 truncate">🎨 Change Template ({selected?.name ?? "Select"})</span>
         </button>
       </Dialog.Trigger>
       <Dialog.Portal>

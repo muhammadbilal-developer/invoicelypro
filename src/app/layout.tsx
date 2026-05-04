@@ -47,7 +47,7 @@ export default function RootLayout({
       <body suppressHydrationWarning className="min-h-full bg-[var(--bg-secondary)] text-[var(--text-primary)]">
         <ThemeProvider>
           <FloatingHeader />
-          <main className="pt-24">{children}</main>
+          <main className="pt-28 md:pt-24">{children}</main>
           <Footer />
         </ThemeProvider>
       </body>

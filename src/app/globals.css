@@ -129,6 +129,31 @@ body {
   print-color-adjust: exact;
 }
 
+.invoice-a4 table,
+.invoice-a4 thead,
+.invoice-a4 tbody,
+.invoice-a4 tr {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.invoice-a4 thead {
+  display: table-header-group;
+}
+
+@media (max-width: 1024px) {
+  .invoice-a4 {
+    padding: 12mm 10mm !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .invoice-a4 {
+    padding: 8mm 6mm !important;
+    font-size: 10px !important;
+  }
+}
+
 .reveal {
   opacity: 0;
   transform: translateY(14px);

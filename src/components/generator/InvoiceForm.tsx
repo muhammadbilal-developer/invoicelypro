@@ -5,6 +5,14 @@ import { Plus, Trash2 } from "lucide-react";
 import { useInvoiceStore } from "@/lib/invoice-store";
 import { TemplateSwitcher } from "./TemplateSwitcher";
 
+const MAIN_CURRENCIES = [
+  { code: "USD", label: "US Dollar ($)" },
+  { code: "EUR", label: "Euro (€)" },
+  { code: "GBP", label: "British Pound (£)" },
+  { code: "JPY", label: "Japanese Yen (¥)" },
+  { code: "CNY", label: "Chinese Yuan (¥)" },
+] as const;
+
 export function InvoiceForm() {
   const { data, setData, setItems } = useInvoiceStore();
 
@@ -23,13 +31,13 @@ export function InvoiceForm() {
     <div className="space-y-4">
       <section className="rounded-2xl border border-[var(--border-default)] bg-[var(--bg-elevated)] p-6">
         <h3 className="mb-4 text-lg font-semibold">Template & Branding</h3>
-        <div className="grid gap-3">
+        <div className="grid min-w-0 gap-3">
           <TemplateSwitcher />
           <label className="text-sm font-medium">Upload Logo</label>
           <input
             type="file"
             accept="image/png,image/jpeg,image/svg+xml"
-            className="focus-ring rounded-xl border border-[var(--border-default)] bg-[var(--bg-primary)] px-3 py-2"
+            className="focus-ring block w-full min-w-0 rounded-xl border border-[var(--border-default)] bg-[var(--bg-primary)] px-3 py-2"
             onChange={(event) => onLogoUpload(event.target.files?.[0])}
           />
         </div>
@@ -52,9 +60,56 @@ export function InvoiceForm() {
       <section className="rounded-2xl border border-[var(--border-default)] bg-[var(--bg-elevated)] p-6">
         <h3 className="mb-4 text-lg font-semibold">Parties</h3>
         <div className="grid gap-3">
-          <Input value={data.fromName} onChange={(v) => setData({ fromName: v })} placeholder="From Name" />
-          <Input value={data.toName} onChange={(v) => setData({ toName: v })} placeholder="To Name" />
-          <Input value={data.currency} onChange={(v) => setData({ currency: v })} placeholder="Currency (USD)" />
+          <Input value={data.companyName} onChange={(v) => setData({ companyName: v, fromName: v || data.fromName })} placeholder="Company Name" />
+          <Input value={data.fromAddress} onChange={(v) => setData({ fromAddress: v })} placeholder="Address" />
+          <div className="grid grid-cols-2 gap-2">
+            <Input value={data.fromPhone} onChange={(v) => setData({ fromPhone: v })} placeholder="From Phone" />
+            <Input value={data.fromEmail} onChange={(v) => setData({ fromEmail: v })} placeholder="From Email" />
+          </div>
+          <div className="grid grid-cols-2 gap-2">
+            <Input type="date" value={data.issueDate} onChange={(v) => setData({ issueDate: v })} placeholder="Issue Date" />
+            <Input type="date" value={data.dueDate} onChange={(v) => setData({ dueDate: v })} placeholder="Due Date" />
+          </div>
+          <Input value={data.toName} onChange={(v) => setData({ toName: v })} placeholder="To" />
+          <Input value={data.toAddress} onChange={(v) => setData({ toAddress: v })} placeholder="To Address" />
+          <div className="grid grid-cols-2 gap-2">
+            <Input value={data.toPhone} onChange={(v) => setData({ toPhone: v })} placeholder="To Phone" />
+            <Input value={data.toEmail} onChange={(v) => setData({ toEmail: v })} placeholder="To Email" />
+          </div>
+          <div className="grid grid-cols-2 gap-2">
+            <Input value={data.taxLabel} onChange={(v) => setData({ taxLabel: v })} placeholder="Tax Label (VAT / Sales Tax)" />
+            <Input
+              type="number"
+              value={String(data.taxValue)}
+              onChange={(v) => {
+                const val = Number(v || 0);
+                setData({ taxValue: val, taxMode: val > 0 ? "flat" : "off" });
+              }}
+              placeholder="Tax Value"
+            />
+          </div>
+          <label className="text-sm font-medium" htmlFor="currency">
+            Currency
+          </label>
+          <select
+            id="currency"
+            className="focus-ring w-full rounded-xl border border-[var(--border-default)] bg-[var(--bg-primary)] px-3 py-2"
+            value={data.currency}
+            onChange={(event) => setData({ currency: event.target.value })}
+          >
+            {MAIN_CURRENCIES.map((currency) => (
+              <option key={currency.code} value={currency.code}>
+                {currency.label}
+              </option>
+            ))}
+          </select>
+          <textarea
+            className="focus-ring w-full rounded-xl border border-[var(--border-default)] bg-[var(--bg-primary)] px-3 py-2"
+            value={data.terms}
+            onChange={(event) => setData({ terms: event.target.value })}
+            placeholder="Terms & Conditions"
+            rows={3}
+          />
         </div>
       </section>
       <section className="rounded-2xl border border-[var(--border-default)] bg-[var(--bg-elevated)] p-6">

@@ -24,32 +24,61 @@ export async function exportInvoicePDF(filename = "invoice.pdf") {
   sandbox.appendChild(clone);
   document.body.appendChild(sandbox);
 
-  const canvas = await html2canvas(clone, {
-    scale: 2,
-    useCORS: true,
-    backgroundColor: "#FFFFFF",
-    logging: false,
-    windowWidth: clone.scrollWidth,
-    windowHeight: clone.scrollHeight,
-  });
+  try {
+    const canvas = await html2canvas(clone, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: "#FFFFFF",
+      logging: false,
+      windowWidth: clone.scrollWidth,
+      windowHeight: clone.scrollHeight,
+    });
 
-  document.body.removeChild(sandbox);
+    const pdf = new jsPDF({ unit: "mm", format: "a4", orientation: "portrait" });
+    const pageW = 210;
+    const pageH = 297;
+    const pageHeightPx = Math.floor((canvas.width * pageH) / pageW);
 
-  const imgData = canvas.toDataURL("image/jpeg", 0.95);
-  const pdf = new jsPDF({ unit: "mm", format: "a4", orientation: "portrait" });
-  const pageW = 210;
-  const pageH = 297;
-  const imgW = pageW;
-  const imgH = (canvas.height * imgW) / canvas.width;
-  let position = 0;
-  let heightLeft = imgH;
-  pdf.addImage(imgData, "JPEG", 0, position, imgW, imgH);
-  heightLeft -= pageH;
-  while (heightLeft > 0) {
-    position = heightLeft - imgH;
-    pdf.addPage();
-    pdf.addImage(imgData, "JPEG", 0, position, imgW, imgH);
-    heightLeft -= pageH;
+    let offsetY = 0;
+    let pageIndex = 0;
+
+    while (offsetY < canvas.height) {
+      const sliceHeight = Math.min(pageHeightPx, canvas.height - offsetY);
+      const pageCanvas = document.createElement("canvas");
+      pageCanvas.width = canvas.width;
+      pageCanvas.height = sliceHeight;
+
+      const ctx = pageCanvas.getContext("2d");
+      if (!ctx) throw new Error("Failed to create page render context");
+
+      ctx.fillStyle = "#FFFFFF";
+      ctx.fillRect(0, 0, pageCanvas.width, pageCanvas.height);
+      ctx.drawImage(
+        canvas,
+        0,
+        offsetY,
+        canvas.width,
+        sliceHeight,
+        0,
+        0,
+        pageCanvas.width,
+        pageCanvas.height,
+      );
+
+      const imgData = pageCanvas.toDataURL("image/jpeg", 0.95);
+      const renderHeightMm = (sliceHeight * pageW) / canvas.width;
+
+      if (pageIndex > 0) {
+        pdf.addPage();
+      }
+      pdf.addImage(imgData, "JPEG", 0, 0, pageW, renderHeightMm, undefined, "FAST");
+
+      offsetY += sliceHeight;
+      pageIndex += 1;
+    }
+
+    pdf.save(filename);
+  } finally {
+    document.body.removeChild(sandbox);
   }
-  pdf.save(filename);
 }

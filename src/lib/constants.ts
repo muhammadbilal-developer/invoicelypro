@@ -3,7 +3,6 @@ export const NAV_LINKS = [
   { label: "Generator", href: "/#generator" },
   { label: "Pricing", href: "/pricing" },
   { label: "Guide", href: "/guide" },
-  { label: "For Pakistan", href: "/invoice-generator/pakistan" },
 ];
 
 export const TEMPLATE_DEFINITIONS = [
@@ -43,7 +42,6 @@ export const TEMPLATE_DEFINITIONS = [
   "real-estate",
   "restaurant-bill",
   "freelancer",
-  "pakistan-fbr",
 ] as const;
 
 export const NICHES = TEMPLATE_DEFINITIONS.map((value) => ({

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import type { InvoiceData, LineItem } from "@/lib/invoice-store";
 import { format } from "date-fns";
@@ -30,15 +30,32 @@ export function money(data: InvoiceData, amount: number) {
   return `${symbol}${amount.toFixed(2)}`;
 }
 
-export function Logo({ data, fallbackText = "Invar" }: { data: InvoiceData; fallbackText?: string }) {
-  if (data.logo) {
-    // eslint-disable-next-line @next/next/no-img-element
-    return <img src={data.logo} alt="logo" style={{ maxHeight: 40, maxWidth: 160 }} />;
-  }
+export function Logo({
+  data,
+  fallbackText = "Invar",
+  showInvoiceNumber = true,
+}: {
+  data: InvoiceData;
+  fallbackText?: string;
+  showInvoiceNumber?: boolean;
+}) {
   return (
-    <div className="text-[22px] font-extrabold tracking-tight">
-      <span style={{ color: "var(--bc)" }}>{fallbackText[0]}</span>
-      <span className="text-[#111827]">{fallbackText.slice(1)}</span>
+    <div>
+      {data.logo ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={data.logo} alt="logo" style={{ maxHeight: 40, maxWidth: 160 }} />
+      ) : (
+        <div className="text-[22px] font-extrabold tracking-tight">
+          <span style={{ color: "var(--bc)" }}>{fallbackText[0]}</span>
+          <span className="text-[#111827]">{fallbackText.slice(1)}</span>
+        </div>
+      )}
+      {showInvoiceNumber ? (
+        <div className="mt-2">
+          <div className="text-[10px] uppercase tracking-wide text-[#6b7280]">Invoice No</div>
+          <div className="text-[11px] font-semibold">{safe(data.invoiceNumber)}</div>
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -47,7 +64,7 @@ export function DocumentTitle({ text }: { text: string }) {
   const normalized = text.replaceAll("-", " ");
   return (
     <div
-      className="max-w-[260px] text-right text-[24px] font-extrabold uppercase leading-tight tracking-[0.03em] break-words"
+      className="max-w-[260px] text-left text-[24px] font-extrabold uppercase leading-tight tracking-[0.03em] break-words"
       style={{ color: "var(--bc)" }}
     >
       {normalized}
@@ -56,10 +73,13 @@ export function DocumentTitle({ text }: { text: string }) {
 }
 
 export function MetaRow({ label, value }: { label: string; value?: string }) {
+  if (label.toLowerCase() === "invoice no") return null;
+  const normalizedLabel = label.toLowerCase();
+  const formattedValue = normalizedLabel === "date" || normalizedLabel === "due" ? formatDate(value) : safe(value);
   return (
-    <div className="flex items-center justify-between py-1">
-      <span className="text-[10px] uppercase tracking-wide text-[#6b7280]">{label}</span>
-      <span className="text-[11px] font-semibold">{safe(value)}</span>
+    <div className="py-1 text-left text-[11px]">
+      <span className="uppercase tracking-wide text-[#6b7280]">{label}</span>
+      <span className="font-semibold"> : {formattedValue}</span>
     </div>
   );
 }
@@ -142,6 +162,7 @@ export function ItemsTable({
 }
 
 export function TotalsBlock({ data, className = "" }: { data: InvoiceData; className?: string }) {
+  const taxLabel = (data as unknown as { taxLabel?: string }).taxLabel || "Tax";
   const subtotal = data.items.reduce((sum, i) => sum + i.quantity * i.rate, 0);
   const tax =
     data.taxMode === "percent" ? (subtotal * data.taxValue) / 100 : data.taxMode === "flat" ? data.taxValue : 0;
@@ -158,7 +179,7 @@ export function TotalsBlock({ data, className = "" }: { data: InvoiceData; class
     <div className={`text-[11px] ${className}`}>
       <Row label="Sub Total" value={money(data, subtotal)} />
       {discount > 0 ? <Row label="Discount" value={`-${money(data, discount)}`} /> : null}
-      {tax > 0 ? <Row label="Tax" value={money(data, tax)} /> : null}
+      {tax > 0 ? <Row label={taxLabel} value={money(data, tax)} /> : null}
       {data.shippingValue > 0 ? <Row label="Shipping" value={money(data, data.shippingValue)} /> : null}
       <Row label="Total" value={money(data, total)} strong accent />
       {data.amountPaid > 0 ? <Row label="Amount Paid" value={money(data, data.amountPaid)} /> : null}

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { FAQ } from "@/components/home/FAQ";
 import { InvoiceGeneratorApp } from "@/components/home/InvoiceGeneratorApp";
 import { NICHES } from "@/lib/constants";
@@ -13,6 +14,13 @@ export async function generateMetadata({
   params: Promise<{ niche: string }>;
 }): Promise<Metadata> {
   const { niche } = await params;
+  const isValidNiche = NICHES.some((entry) => entry.slug === niche);
+  if (!isValidNiche) {
+    return {
+      title: "Invoice Generator — Free PDF Templates",
+      description: "Create invoices online with live preview and instant PDF download.",
+    };
+  }
   const text = niche.replaceAll("-", " ");
   const title = `${text} Invoice Generator — Free PDF Templates`;
   return { title, description: `Create ${text} invoices online with live preview and instant PDF download.` };
@@ -24,6 +32,8 @@ export default async function NichePage({
   params: Promise<{ niche: string }>;
 }) {
   const { niche } = await params;
+  const isValidNiche = NICHES.some((entry) => entry.slug === niche);
+  if (!isValidNiche) notFound();
   const title = niche
     .split("-")
     .map((part) => part[0].toUpperCase() + part.slice(1))

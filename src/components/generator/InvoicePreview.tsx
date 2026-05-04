@@ -5,15 +5,23 @@ import { TEMPLATES } from "@/components/templates";
 import { useInvoiceStore } from "@/lib/invoice-store";
 import type { InvoiceData } from "@/lib/invoice-store";
 
+const CURRENCY_SYMBOLS: Record<string, string> = {
+  USD: "$",
+  EUR: "€",
+  GBP: "£",
+  JPY: "¥",
+  CNY: "¥",
+};
+
 export function InvoicePreview() {
   const { data } = useInvoiceStore();
   const normalized = useMemo<InvoiceData>(
     () =>
       ({
         ...data,
-        currencySymbol: "$",
+        currencySymbol: CURRENCY_SYMBOLS[data.currency] ?? "$",
         from: {
-          name: data.fromName,
+          name: data.companyName || data.fromName,
           address: data.fromAddress,
           email: data.fromEmail,
           phone: data.fromPhone,
@@ -26,6 +34,11 @@ export function InvoicePreview() {
           phone: data.toPhone,
           taxId: data.toTaxId,
         },
+        taxLabel: data.taxLabel,
+        shipToName: data.shipToName,
+        shipToAddress: data.shipToAddress,
+        shipToEmail: data.shipToEmail,
+        shipToPhone: data.shipToPhone,
         subtotal: data.items.reduce((sum, item) => sum + item.quantity * item.rate, 0),
         taxAmount: 0,
         discountAmount: 0,
@@ -39,8 +52,11 @@ export function InvoicePreview() {
   const TemplateComponent = template.Component;
 
   return (
-    <div className="sticky top-24">
-      <div id="invoice-preview" className="mx-auto w-full max-w-[800px] overflow-hidden rounded-lg bg-transparent shadow-2xl">
+    <div className="lg:sticky lg:top-24">
+      <div
+        id="invoice-preview"
+        className="mx-auto w-full max-w-[800px] overflow-x-auto rounded-lg bg-transparent shadow-2xl"
+      >
         <div>
           <TemplateComponent data={normalized} />
         </div>

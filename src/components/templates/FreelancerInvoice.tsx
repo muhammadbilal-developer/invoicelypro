@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import type { InvoiceData } from "@/lib/invoice-store";
 import { TemplateFrame } from "./_TemplateFrame";
@@ -8,7 +8,7 @@ export function FreelancerInvoice({ data }: { data: InvoiceData }) {
   return (
     <TemplateFrame brandColor={data.brandColor}>
       <header className="mb-6 flex items-start justify-between">
-        <Logo data={data} fallbackText="InvoicelyPro" />
+        <Logo data={data} fallbackText="InvoicelyPro" showInvoiceNumber={false} />
         <div className="text-right">
           <div className="inline-block rounded-full bg-[var(--bc-soft)] px-3 py-1 text-[10px] font-semibold uppercase tracking-wide text-[var(--bc)]">
             Freelance Invoice
@@ -27,11 +27,13 @@ export function FreelancerInvoice({ data }: { data: InvoiceData }) {
         <div className="rounded-lg border-l-4 border-[var(--bc)] bg-[var(--bc-soft)] p-4 text-[10px]">
           <div className="font-semibold">From</div>
           <div>{(data as unknown as { fromName?: string }).fromName || "—"}</div>
+          <div>{(data as unknown as { fromAddress?: string }).fromAddress || "—"}</div>
           <div>{(data as unknown as { fromEmail?: string }).fromEmail || "—"}</div>
         </div>
         <div className="rounded-lg border-l-4 border-[var(--bc)] bg-[var(--bc-soft)] p-4 text-[10px]">
           <div className="font-semibold">To</div>
           <div>{(data as unknown as { toName?: string }).toName || "—"}</div>
+          <div>{(data as unknown as { toAddress?: string }).toAddress || "—"}</div>
           <div>{(data as unknown as { toEmail?: string }).toEmail || "—"}</div>
         </div>
       </section>
@@ -45,9 +47,13 @@ export function FreelancerInvoice({ data }: { data: InvoiceData }) {
         <TotalsBlock data={data} className="w-1/2" />
       </section>
 
-      <section className="mt-6 grid grid-cols-2 gap-4 text-[10px]">
-        <div className="rounded-md bg-[#f8fafc] p-3 font-mono">{data.paymentInstructions || "—"}</div>
-        <div className="rounded-md bg-[#f8fafc] p-3">{data.notes || "—"}</div>
+      <section className="mt-6 text-[10px]">
+        <h4 className="mb-1 text-[11px] font-bold uppercase" style={{ color: "var(--bc)" }}>
+          Terms & Conditions
+        </h4>
+        <div className="w-full rounded-md bg-[#f8fafc] p-3 whitespace-pre-line break-words">
+          {data.terms || "—"}
+        </div>
       </section>
 
       <NoteBlock>NOTE: This is a computer generated receipt and does not require physical signature.</NoteBlock>
