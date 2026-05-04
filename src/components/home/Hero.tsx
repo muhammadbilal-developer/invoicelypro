@@ -9,8 +9,9 @@ export function Hero() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.2 });
 
   return (
-    <section className="container-shell flex min-h-[calc(100svh-6rem)] items-start pt-8 pb-4 md:items-center md:py-4">
-      <div className="grid w-full gap-6 lg:grid-cols-2 lg:items-center">
+    <section className="relative w-full overflow-hidden pt-8 pb-12 md:py-6 lg:h-[calc(100svh-6rem)] lg:py-4">
+      <div className="container-shell flex items-start lg:h-full lg:items-center">
+        <div className="grid w-full gap-6 lg:grid-cols-2 lg:items-center">
         <div ref={ref} className={inView ? "reveal reveal-visible" : "reveal"}>
           <h1 className="text-4xl font-extrabold leading-[1.05] tracking-[-0.02em] md:text-6xl">
             Create{" "}
@@ -43,26 +44,31 @@ export function Hero() {
             🔒 No signup required · ⚡ Instant PDF · 🌍 165+ currencies · 🇵🇰 PKR & FBR-compliant
           </p>
         </div>
-        <div className="relative mx-auto w-full max-w-[420px] overflow-hidden rounded-3xl border border-[var(--border-default)] bg-[var(--bg-elevated)] p-5 shadow-[var(--shadow-xl)] ring-1 ring-black/5 dark:ring-white/10">
-          <div className="pointer-events-none absolute -top-14 -right-10 h-40 w-40 rounded-full bg-[var(--brand-primary)]/20 blur-3xl" />
-          <div className="pointer-events-none absolute -bottom-16 -left-10 h-44 w-44 rounded-full bg-[var(--brand-accent)]/20 blur-3xl" />
-          <div className="relative rounded-2xl border border-[var(--border-default)] bg-[var(--bg-primary)] p-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.08em] text-[var(--text-secondary)]">
-              Why Teams Choose InvoicelyPro
-            </p>
-            <div className="mt-3 grid gap-2">
-              <FeaturePill icon={<Zap className="h-4 w-4" />} text="Create and export in under 60 seconds" />
-              <FeaturePill icon={<ShieldCheck className="h-4 w-4" />} text="No signup, no watermark, secure flow" />
-              <FeaturePill icon={<Sparkles className="h-4 w-4" />} text="30+ modern templates for every niche" />
-            </div>
-            <div className="mt-4 grid grid-cols-3 gap-2 text-center">
-              <Stat value="30+" label="Templates" />
-              <Stat value="165+" label="Currencies" />
-              <Stat value="1-click" label="PDF" />
+          <div className="relative mx-auto w-full max-w-[420px] overflow-hidden rounded-3xl border border-[var(--border-default)] bg-[var(--bg-elevated)] p-5 shadow-[var(--shadow-xl)] ring-1 ring-black/5 dark:ring-white/10">
+            <div className="pointer-events-none absolute -top-14 -right-10 h-40 w-40 rounded-full bg-[var(--brand-primary)]/20 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-16 -left-10 h-44 w-44 rounded-full bg-[var(--brand-accent)]/20 blur-3xl" />
+            <div className="relative rounded-2xl border border-[var(--border-default)] bg-[var(--bg-primary)] p-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.08em] text-[var(--text-secondary)]">
+                Why Teams Choose InvoicelyPro
+              </p>
+              <div className="mt-3 grid gap-2">
+                <FeaturePill icon={<Zap className="h-4 w-4" />} text="Create and export in under 60 seconds" />
+                <FeaturePill icon={<ShieldCheck className="h-4 w-4" />} text="No signup, no watermark, secure flow" />
+                <FeaturePill icon={<Sparkles className="h-4 w-4" />} text="30+ modern templates for every niche" />
+              </div>
+              <div className="mt-4 grid grid-cols-3 gap-2 text-center">
+                <Stat value="30+" label="Templates" />
+                <Stat value="165+" label="Currencies" />
+                <Stat value="1-click" label="PDF" />
+              </div>
             </div>
           </div>
         </div>
       </div>
+      <div
+        aria-hidden="true"
+        className="hero-bottom-wave pointer-events-none absolute bottom-0 left-0 h-12 w-[100vw]"
+      />
     </section>
   );
 }

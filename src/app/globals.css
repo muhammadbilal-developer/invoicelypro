@@ -164,3 +164,14 @@ body {
   opacity: 1;
   transform: translateY(0);
 }
+
+.hero-bottom-wave {
+  background: var(--brand-primary);
+  --mask:
+    radial-gradient(55.34px at 50% calc(100% - 76.5px), #000 99%, #0000 101%) calc(50% - 60px) 0 / 120px 100%,
+    radial-gradient(55.34px at 50% calc(100% + 46.5px), #0000 99%, #000 101%) 50% calc(100% - 30px) / 120px 100% repeat-x;
+  -webkit-mask: var(--mask);
+  mask: var(--mask);
+  transform: scaleY(-1);
+  transform-origin: center;
+}
