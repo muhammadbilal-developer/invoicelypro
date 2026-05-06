@@ -2,7 +2,7 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 
 export async function exportInvoicePDF(filename = "invoice.pdf") {
-  const node = document.querySelector<HTMLElement>("[data-invoice-frame]");
+  const node = document.querySelector<HTMLElement>("[data-invoice-export]") ?? document.querySelector<HTMLElement>("[data-invoice-frame]");
   if (!node) throw new Error("Invoice frame not found");
 
   const sandbox = document.createElement("div");

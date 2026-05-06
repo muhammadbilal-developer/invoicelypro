@@ -1,13 +1,13 @@
 import type { InvoiceData } from "./invoice-store";
 
 export const mockInvoiceData: InvoiceData = {
-  templateId: "default-template",
+  templateId: "technology-template",
   documentType: "invoice",
   invoiceNumber: "INV-20260427-1001",
   issueDate: "2026-04-27",
   dueDate: "2026-05-11",
   currency: "USD",
-  brandColor: "#B7DED7",
+  brandColor: "#2563EB",
   fromName: "Digital Invoice Agency",
   fromAddress: "451 E College Ave, New York, NY 10001",
   fromEmail: "hello@digitalinvoice.com",

@@ -24,7 +24,8 @@ export function money(data: InvoiceData, amount: number) {
 }
 
 export function computeTotals(data: InvoiceData) {
-  const subtotal = data.items.reduce((sum, item) => sum + item.quantity * item.rate, 0);
+  const allItems = ((data as unknown as { allItems?: InvoiceData["items"] }).allItems ?? data.items);
+  const subtotal = allItems.reduce((sum, item) => sum + item.quantity * item.rate, 0);
   const tax =
     data.taxMode === "percent" ? (subtotal * data.taxValue) / 100 : data.taxMode === "flat" ? data.taxValue : 0;
   const discount =
@@ -40,6 +41,15 @@ export function computeTotals(data: InvoiceData) {
     discount,
     total,
     balanceDue: total - data.amountPaid,
+  };
+}
+
+export function getPageMeta(data: InvoiceData) {
+  const source = data as unknown as { pageNumber?: number; pageCount?: number; showTotals?: boolean };
+  return {
+    pageNumber: source.pageNumber ?? 1,
+    pageCount: source.pageCount ?? 1,
+    showTotals: source.showTotals ?? true,
   };
 }
 

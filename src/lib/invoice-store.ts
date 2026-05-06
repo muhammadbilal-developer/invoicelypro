@@ -54,14 +54,14 @@ type InvoiceStore = {
 };
 
 const initialData: InvoiceData = {
-  templateId: "default-template",
+  templateId: "technology-template",
   documentType: "invoice",
   invoiceNumber: `INV-${new Date().toISOString().slice(0, 10).replaceAll("-", "")}-1001`,
   issueDate: new Date().toISOString().slice(0, 10),
   dueDate: new Date(Date.now() + 1000 * 60 * 60 * 24 * 14).toISOString().slice(0, 10),
   companyName: "",
   currency: "USD",
-  brandColor: "#B7DED7",
+  brandColor: "#2563EB",
   fromName: "",
   fromAddress: "",
   fromEmail: "",
