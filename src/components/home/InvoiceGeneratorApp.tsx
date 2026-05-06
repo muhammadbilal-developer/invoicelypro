@@ -11,8 +11,9 @@ export function InvoiceGeneratorApp({ initialTemplateId }: { initialTemplateId?:
   const { setData } = useInvoiceStore();
   useEffect(() => {
     if (!initialTemplateId) return;
-    if (!TEMPLATES[initialTemplateId]) return;
-    setData({ templateId: initialTemplateId });
+    const template = TEMPLATES[initialTemplateId];
+    if (!template) return;
+    setData({ templateId: initialTemplateId, brandColor: template.defaultColor });
   }, [initialTemplateId, setData]);
 
   return (

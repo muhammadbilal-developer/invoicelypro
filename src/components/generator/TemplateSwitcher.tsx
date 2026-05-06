@@ -1,100 +1,95 @@
 "use client";
 
 import * as Dialog from "@radix-ui/react-dialog";
-import Image from "next/image";
-import { useMemo, useState } from "react";
-import { TEMPLATE_LIST, type TemplateCategory } from "@/components/templates";
+import { useState } from "react";
+import { TEMPLATE_LIST } from "@/components/templates";
 import { useInvoiceStore } from "@/lib/invoice-store";
 
-const CATEGORIES: Array<"All" | TemplateCategory> = [
-  "All",
-  "General",
-  "Travel & Booking",
-  "Hospitality",
-  "Healthcare",
-  "Education",
-  "Entertainment",
-  "Services",
-  "Real Estate",
-  "Finance",
-  "Freelance",
-];
+function normalizeHex(value: string) {
+  const raw = value.trim();
+  const withHash = raw.startsWith("#") ? raw : `#${raw}`;
+  return /^#[0-9A-Fa-f]{6}$/.test(withHash) ? withHash : null;
+}
 
 export function TemplateSwitcher() {
   const { data, setData } = useInvoiceStore();
   const [open, setOpen] = useState(false);
-  const [search, setSearch] = useState("");
-  const [category, setCategory] = useState<"All" | TemplateCategory>("All");
-
-  const filtered = useMemo(
-    () =>
-      TEMPLATE_LIST.filter((tpl) => {
-        const categoryMatch = category === "All" || tpl.category === category;
-        const query = search.trim().toLowerCase();
-        const queryMatch = !query || tpl.name.toLowerCase().includes(query);
-        return categoryMatch && queryMatch;
-      }),
-    [category, search],
-  );
-
   const selected = TEMPLATE_LIST.find((tpl) => tpl.id === data.templateId);
 
   return (
-    <Dialog.Root open={open} onOpenChange={setOpen}>
-      <Dialog.Trigger asChild>
-        <button className="focus-ring inline-flex h-11 w-full min-w-0 items-center rounded-full border border-[var(--border-default)] px-4 text-sm font-semibold">
-          <span className="block min-w-0 truncate">🎨 Change Template ({selected?.name ?? "Select"})</span>
-        </button>
-      </Dialog.Trigger>
-      <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 z-50 bg-black/50" />
-        <Dialog.Content className="fixed left-1/2 top-1/2 z-[60] h-[88vh] w-[96vw] max-w-6xl -translate-x-1/2 -translate-y-1/2 overflow-auto rounded-3xl bg-[var(--bg-primary)] p-6">
-          <Dialog.Title className="text-2xl font-bold">Choose Template</Dialog.Title>
-          <Dialog.Description className="sr-only">
-            Search and choose an invoice template to apply in the generator.
-          </Dialog.Description>
-          <input
-            value={search}
-            onChange={(event) => setSearch(event.target.value)}
-            placeholder="Search templates..."
-            className="focus-ring mt-4 w-full rounded-xl border border-[var(--border-default)] bg-[var(--bg-elevated)] px-3 py-2"
-          />
-          <div className="mt-3 flex flex-wrap gap-2">
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setCategory(cat)}
-                className={`focus-ring rounded-full px-3 py-1 text-xs ${category === cat ? "bg-[var(--brand-primary)] text-white" : "border border-[var(--border-default)]"}`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
+    <div className="space-y-3">
+      <Dialog.Root open={open} onOpenChange={setOpen}>
+        <Dialog.Trigger asChild>
+          <button className="focus-ring inline-flex h-11 w-full min-w-0 items-center rounded-full border border-[var(--border-default)] px-4 text-sm font-semibold">
+            <span className="block min-w-0 truncate">🎨 Change Template ({selected?.name ?? "Select"})</span>
+          </button>
+        </Dialog.Trigger>
+        <Dialog.Portal>
+          <Dialog.Overlay className="fixed inset-0 z-50 bg-black/50" />
+          <Dialog.Content className="fixed left-1/2 top-1/2 z-[60] w-[96vw] max-w-3xl -translate-x-1/2 -translate-y-1/2 overflow-auto rounded-3xl bg-[var(--bg-primary)] p-6">
+            <Dialog.Title className="text-2xl font-bold">Choose Template</Dialog.Title>
+            <Dialog.Description className="sr-only">Choose one of the three invoice templates.</Dialog.Description>
+            <div className="mt-6 grid gap-4 md:grid-cols-3">
+              {TEMPLATE_LIST.map((tpl) => (
+                <article key={tpl.id} className="rounded-2xl border border-[var(--border-default)] bg-[var(--bg-elevated)] p-4">
+                  <div className="h-28 rounded-xl border border-[var(--border-default)] p-3">
+                    <div className="h-5 rounded" style={{ backgroundColor: tpl.defaultColor }} />
+                    <div className="mt-2 h-2 w-1/2 rounded bg-[var(--bg-tertiary)]" />
+                    <div className="mt-2 h-2 w-full rounded bg-[var(--bg-tertiary)]" />
+                    <div className="mt-2 h-2 w-4/5 rounded bg-[var(--bg-tertiary)]" />
+                  </div>
+                  <h4 className="mt-3 text-sm font-semibold">{tpl.name}</h4>
+                  <button
+                    onClick={() => {
+                      setData({ templateId: tpl.id, brandColor: tpl.defaultColor });
+                      setOpen(false);
+                    }}
+                    className="focus-ring mt-3 w-full rounded-full bg-[var(--brand-primary)] py-2 text-sm font-semibold text-white"
+                  >
+                    Use this
+                  </button>
+                </article>
+              ))}
+            </div>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
 
-          <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-            {filtered.map((tpl) => (
-              <article key={tpl.id} className="rounded-2xl border border-[var(--border-default)] bg-[var(--bg-elevated)] p-3">
-                <div className="relative aspect-[1/1.4] overflow-hidden rounded-xl bg-[var(--bg-tertiary)]">
-                  <Image src={tpl.thumb} alt={tpl.name} fill sizes="(max-width: 768px) 50vw, 25vw" className="object-cover" />
-                </div>
-                <h4 className="mt-3 text-sm font-semibold">{tpl.name}</h4>
-                <span className="mt-1 inline-block rounded-full bg-[var(--bg-tertiary)] px-2 py-0.5 text-[10px]">
-                  {tpl.category}
-                </span>
-                <button
-                  onClick={() => {
-                    setData({ templateId: tpl.id });
-                    setOpen(false);
-                  }}
-                  className="focus-ring mt-3 w-full rounded-full bg-[var(--brand-primary)] py-2 text-sm font-semibold text-white"
-                >
-                  Use this
-                </button>
-              </article>
+      <div>
+        <label className="mb-1 block text-sm font-medium">Theme Color</label>
+        <div className="flex items-center gap-2">
+          <input
+            type="color"
+            value={normalizeHex(data.brandColor) ?? selected?.defaultColor ?? "#1C3557"}
+            onChange={(event) => setData({ brandColor: event.target.value })}
+            className="h-10 w-14 rounded-lg border border-[var(--border-default)] bg-transparent p-1"
+            aria-label="Theme color"
+          />
+          <input
+            type="text"
+            value={data.brandColor}
+            onChange={(event) => {
+              const value = event.target.value;
+              const normalized = normalizeHex(value);
+              setData({ brandColor: normalized ?? value });
+            }}
+            className="focus-ring h-10 flex-1 rounded-xl border border-[var(--border-default)] bg-[var(--bg-primary)] px-3 py-2 text-sm"
+            placeholder="#1C3557"
+          />
+          <div className="flex gap-1">
+            {TEMPLATE_LIST.map((tpl) => (
+              <button
+                key={`swatch-${tpl.id}`}
+                type="button"
+                onClick={() => setData({ brandColor: tpl.defaultColor })}
+                className="h-8 w-8 rounded-full border border-[var(--border-default)]"
+                style={{ backgroundColor: tpl.defaultColor }}
+                aria-label={`${tpl.name} default color`}
+              />
             ))}
           </div>
-        </Dialog.Content>
-      </Dialog.Portal>
-    </Dialog.Root>
+        </div>
+      </div>
+    </div>
   );
 }

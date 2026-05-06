@@ -1,13 +1,13 @@
 import type { InvoiceData } from "./invoice-store";
 
 export const mockInvoiceData: InvoiceData = {
-  templateId: "general-invoice",
+  templateId: "default-template",
   documentType: "invoice",
   invoiceNumber: "INV-20260427-1001",
   issueDate: "2026-04-27",
   dueDate: "2026-05-11",
   currency: "USD",
-  brandColor: "#2563EB",
+  brandColor: "#B7DED7",
   fromName: "Digital Invoice Agency",
   fromAddress: "451 E College Ave, New York, NY 10001",
   fromEmail: "hello@digitalinvoice.com",
@@ -32,5 +32,4 @@ export const mockInvoiceData: InvoiceData = {
   notes: "Thanks for your business.",
   terms: "Payment due within 14 days.",
   paymentInstructions: "Bank: Demo Bank\nIBAN: PK00DEMO00011223344\nSWIFT: DEMOPKKA",
-  paymentMethod: "Bank Transfer",
 } as unknown as InvoiceData;

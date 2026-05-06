@@ -48,7 +48,7 @@ export function InvoicePreview() {
       }) as unknown as InvoiceData,
     [data],
   );
-  const template = TEMPLATES[data.templateId] ?? TEMPLATES["general-invoice"];
+  const template = TEMPLATES[data.templateId] ?? TEMPLATES["default-template"];
   const TemplateComponent = template.Component;
 
   return (
