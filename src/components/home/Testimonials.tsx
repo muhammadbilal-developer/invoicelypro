@@ -3,6 +3,18 @@
 import { Quote, Star } from "lucide-react";
 import { useInView } from "react-intersection-observer";
 
+function GoogleBadge() {
+  return (
+    <span
+      aria-label="Google reviews"
+      title="Google reviews"
+      className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-[var(--border-default)] bg-white text-sm font-bold shadow-sm"
+    >
+      <span className="text-[#4285F4]">G</span>
+    </span>
+  );
+}
+
 export function Testimonials() {
   const items = [
     ["Freelancer, PK", "I generate client invoices in under 2 minutes."],
@@ -14,7 +26,10 @@ export function Testimonials() {
   ];
   return (
     <section className="container-shell py-20">
-      <h2 className="text-3xl font-bold md:text-5xl">Loved by 100,000+ businesses</h2>
+      <div className="flex items-center gap-3">
+        <h2 className="text-3xl font-bold md:text-5xl">Loved by 100,000+ businesses</h2>
+        <GoogleBadge />
+      </div>
       <div className="mt-8 grid gap-4 lg:grid-cols-3">
         {items.map(([author, quote], index) => (
           <TestimonialCard key={author} author={author} quote={quote} delayMs={index * 40} />

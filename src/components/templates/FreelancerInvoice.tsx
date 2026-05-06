@@ -47,7 +47,7 @@ export function FreelancerInvoice({ data }: { data: InvoiceData }) {
         <TotalsBlock data={data} className="w-1/2" />
       </section>
 
-      <section className="mt-6 text-[10px]">
+      <section className="mt-auto pt-6 text-[10px]">
         <h4 className="mb-1 text-[11px] font-bold uppercase" style={{ color: "var(--bc)" }}>
           Terms & Conditions
         </h4>

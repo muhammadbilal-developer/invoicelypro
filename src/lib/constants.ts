@@ -1,8 +1,8 @@
 export const NAV_LINKS = [
   { label: "Templates", href: "/templates" },
   { label: "Generator", href: "/#generator" },
-  { label: "Pricing", href: "/pricing" },
-  { label: "Guide", href: "/guide" },
+  { label: "About Us", href: "/about" },
+  { label: "Contact Us", href: "/contact" },
 ];
 
 export const TEMPLATE_DEFINITIONS = [

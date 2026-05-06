@@ -12,7 +12,7 @@ export function TemplateFrame({
   return (
     <div
       data-invoice-frame
-      className="invoice-a4 bg-white text-[#1a1a1a]"
+      className="invoice-a4 flex flex-col bg-white text-[#1a1a1a]"
       style={
         {
           width: "100%",

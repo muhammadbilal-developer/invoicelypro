@@ -103,7 +103,7 @@ export function ${file}({ data }: { data: InvoiceData }) {
         <TotalsBlock data={data} className="w-[42%]" />
       </section>
 
-      <section className="mt-7 grid grid-cols-2 gap-5 text-[10px]">
+      <section className="mt-auto pt-7 grid grid-cols-2 gap-5 text-[10px]">
         <div>
           <h4 className="mb-1 text-[11px] font-bold uppercase" style={{ color: "var(--bc)" }}>Payment Info</h4>
           <div className="whitespace-pre-line text-gray-700">{data.paymentInstructions || "—"}</div>

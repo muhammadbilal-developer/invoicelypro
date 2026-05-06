@@ -7,14 +7,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "",
     "/templates",
     "/guide",
-    "/pricing",
     "/about",
     "/contact",
     "/privacy-policy",
     "/terms-of-service",
     "/dmca",
     "/cookies-policy",
-    "/refund-policy",
     "/disclaimer",
   ];
   return [

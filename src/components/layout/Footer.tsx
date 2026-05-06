@@ -8,7 +8,6 @@ const legalLinks = [
   ["/terms-of-service", "Terms of Service"],
   ["/dmca", "DMCA Policy"],
   ["/cookies-policy", "Cookies Policy"],
-  ["/refund-policy", "Refund Policy"],
   ["/disclaimer", "Disclaimer"],
   ["/sitemap.xml", "Sitemap"],
 ] as const;
@@ -34,8 +33,6 @@ export function Footer() {
           links={[
             ["/", "Invoice Generator"],
             ["/templates", "All Templates"],
-            ["/pricing", "Pricing"],
-            ["/#features", "Features"],
             ["/estimate-generator", "Estimate Generator"],
             ["/receipt-generator", "Receipt Generator"],
             ["/quote-generator", "Quote Generator"],
